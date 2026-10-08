@@ -1,0 +1,19 @@
+# Blueprint de Render: https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: puravida-tienda-api
+    runtime: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips='*'
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: API_KEYS
+        sync: false        # se define en el panel de Render (una clave por grupo/estudiante, separadas por coma)
+      - key: CHAOS_RATE
+        value: "0.03"
+      - key: RATE_LIMIT
+        value: "60"
